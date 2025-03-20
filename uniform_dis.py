@@ -1,24 +1,39 @@
-# import numpy as np
-# import matplotlib.pyplot as plt
-# values = np.random.uniform(0.01, 0.99, 1000)
-
-# count, bins, ignored = plt.hist(values, 20, density=True)
-# plt.plot(bins, np.ones_like(bins),color='r')
-# plt.title('Uniform Distribution')
-# plt.ylabel('Density')
-# plt.xlabel('values')
-# plt.show()
-
-from scipy.stats import uniform
-import matplotlib.pyplot as plt
 import numpy as np
+import scipy.stats as stats
+import matplotlib.pyplot as plt
 
-x = uniform.rvs(0.01,0.99, size=1000)
-print(f'pdf of x is {uniform.pdf(x[0])}')
+# Define parameters of the uniform distribution
+a, b = 2, 10  # Lower and upper bounds
+uniform_dist = stats.uniform(loc=a, scale=b-a)
 
-plt.hist(x, density = True)
-plt.axhline(y=uniform.pdf(x[0]),color='r')
-plt.title('uniform distribution')
-plt.ylabel('Density')
-plt.xlabel('X')
+# Calculate probability: P(4 ≤ X ≤ 8)
+probability = uniform_dist.cdf(8) - uniform_dist.cdf(4)
+print(f"Probability that X is between 4 and 8: {probability:.4f}")
+
+# Generate values for plotting
+x = np.linspace(a - 2, b + 2, 1000)
+pdf_values = uniform_dist.pdf(x)
+cdf_values = uniform_dist.cdf(x)
+
+# Plot the PDF
+plt.figure(figsize=(8, 4))
+plt.plot(x, pdf_values, label="PDF", color='blue')
+plt.axhline(0, color='black', linewidth=0.5)
+plt.fill_between(x, pdf_values, alpha=0.3, color='blue')
+plt.title("Uniform Distribution PDF")
+plt.xlabel("X")
+plt.ylabel("Density")
+plt.legend()
+plt.grid()
+plt.show()
+
+# Plot the CDF
+plt.figure(figsize=(8, 4))
+plt.plot(x, cdf_values, label="CDF", color='red')
+plt.axhline(0, color='black', linewidth=0.5)
+plt.title("Uniform Distribution CDF")
+plt.xlabel("X")
+plt.ylabel("Cumulative Probability")
+plt.legend()
+plt.grid()
 plt.show()
